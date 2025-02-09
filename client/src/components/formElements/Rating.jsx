@@ -6,11 +6,10 @@ const Rating = ({ id, isPreview }) => {
   const { updateComponent, formData, removeComponent, duplicateComponent } = useFormContext();
   const componentData = formData.find((item) => item.id === id) || {}; // Get component state from context
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("Rating");
-  const [tempTitle, setTempTitle] = useState("Rating"); // For temporary title during edit
+  const [title, setTitle] = useState("Rating:");
+  const [tempTitle, setTempTitle] = useState("Rating:"); // For temporary title during edit
   const [isRequired, setIsRequired] = useState(false);
-  const [tempIsRequired, setTempIsRequired] = useState(false); // Temporary required state (used in edit)
-  const [options, setOptions] = useState([]);
+  const [tempIsRequired, setTempIsRequired] = useState(false);
   const [tempOptions, setTempOptions] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   ]);
@@ -19,7 +18,6 @@ const Rating = ({ id, isPreview }) => {
 
   const [finalNumber, setFinalNumber] = useState(selectedNumber);
   const [finalIcon, setFinalIcon] = useState(selectedIcon);
-  const [userRating, setUserRating] = useState(null); // Store user's selected rating
 
   const numbers = Array.from({ length: selectedNumber }, (_, i) => i + 1);
 
@@ -35,17 +33,14 @@ const Rating = ({ id, isPreview }) => {
     // Save selected values to final states
     setFinalNumber(selectedNumber);
     setFinalIcon(selectedIcon);
-    
-    
-    updateComponent(id, { title: tempTitle, isRequired: tempIsRequired, options:[{"number": selectedNumber, "icon": selectedIcon}] });
+
+    updateComponent(id, {
+      title: tempTitle,
+      isRequired: tempIsRequired,
+      options: [{ number: selectedNumber, icon: selectedIcon }],
+    });
 
     setOpen(false);
-  };
-
-  const handleRatingSelect = (num) => {
-    if (isPreview) {
-      setUserRating(num); // Update the rating when clicked
-    }
   };
 
   return (
@@ -78,22 +73,22 @@ const Rating = ({ id, isPreview }) => {
       ) : (
         <>
           <div className="w-[93%] min-h-[118px] h-auto rounded-xl border border-[#0000004D] px-4 py-5">
-            <div className="flex w-full items-center space-x-4">
-              <span className="font-medium text-xl">
+            <div className="flex w-full flex-wrap items-start gap-2">
+              <span className="font-medium text-xl break-words w-full">
                 {title}
-                {isRequired ? <span className="text-red-600"> *</span> : <></>}
+                {isRequired ? <span className="text-red-600"> *</span> : null}
               </span>
               {!open && (
-                <div className="flex-1 space-x-4 mt-2">
+                <div className="flex flex-wrap items-center space-x-2 w-full sm:w-auto">
                   <select
-                    className="w-[20%] p-2 outline-none cursor-not-allowed rounded-[14px] border border-[#0000004D]"
+                    className="w-[20%] min-w-[100px] p-2 outline-none cursor-not-allowed rounded-[14px] border border-[#0000004D]"
                     disabled
                   >
                     <option>{finalNumber}</option>
                   </select>
                   <span className="text-base font-semibold">To</span>
                   <select
-                    className="w-[20%] p-2 outline-none cursor-not-allowed rounded-[14px] border border-[#0000004D]"
+                    className="w-[20%] min-w-[100px] p-2 outline-none cursor-not-allowed rounded-[14px] border border-[#0000004D]"
                     disabled
                   >
                     <option>{finalIcon}</option>
@@ -101,6 +96,7 @@ const Rating = ({ id, isPreview }) => {
                 </div>
               )}
             </div>
+
             <hr className="text-[#D9D9D9] w-full mt-4" />
             <div className="flex gap-x-5 items-center mt-3 w-full">
               <button

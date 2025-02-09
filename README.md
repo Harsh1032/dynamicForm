@@ -8,3 +8,4 @@ To get started with this project, run
 
 and copy the .env.example variables into a separate .env file, fill them out and put them in the server folder & and that's all you need to get started!
 
+

@@ -13,7 +13,6 @@ const FormDashboard = () => {
   const handleViewForm = (id) => {
     navigate(`/view-form/${id}`); // Navigate to the ViewForm page
   };
-  console.log("Forms", forms);
 
   const getAllForms = async () => {
     try {

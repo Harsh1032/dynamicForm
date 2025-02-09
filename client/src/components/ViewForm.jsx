@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; // Assuming you're using React Router
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, Circle } from "lucide-react";
 const ViewForm = () => {
   const { id } = useParams(); // Get form ID from URL
   const [form, setForm] = useState(null);
@@ -28,8 +28,6 @@ const ViewForm = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-
-  console.log(form);
 
   return (
     <div className="w-full mt-5 flex flex-col">
@@ -158,32 +156,32 @@ const ViewForm = () => {
               )}
               {field.type === "multipleChoice" && (
                 <div className="w-[93%] min-h-[67px] h-auto mx-auto rounded-xl border border-[#0000004D] px-4 py-5 space-y-2 flex flex-col">
-                <span className="font-medium text-xl">
-                  {field.label}
-                  {field.isRequired ? (
-                    <span className="text-red-600"> *</span>
-                  ) : (
-                    <></>
-                  )}
-                </span>
-                {field.options.length > 0 && (
-                  <div className="mb-2">
-                    <div className="flex flex-col gap-2 mt-2 w-full space-y-2">
-                      {field.options[0].map((option, index) => (
-                        <div className="bg-[#F9F9F9] py-2 px-4 rounded-[10px] gap-2 min-w-[125px] w-auto flex items-center gap-x-2">
-                          <input type="checkbox" className="size-4" />
-                          <span
-                            key={index}
-                            className="font-normal text-base text-black"
-                          >
-                            {option}
-                          </span>
-                        </div>
-                      ))}
+                  <span className="font-medium text-xl">
+                    {field.label}
+                    {field.isRequired ? (
+                      <span className="text-red-600"> *</span>
+                    ) : (
+                      <></>
+                    )}
+                  </span>
+                  {field.options.length > 0 && (
+                    <div className="mb-2">
+                      <div className="flex flex-col gap-2 mt-2 w-full space-y-2">
+                        {field.options[0].map((option, index) => (
+                          <div className="bg-[#F9F9F9] py-2 px-4 rounded-[10px] gap-2 min-w-[125px] w-auto flex items-center gap-x-2">
+                            <input type="checkbox" className="size-4" />
+                            <span
+                              key={index}
+                              className="font-normal text-base text-black"
+                            >
+                              {option}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}{" "}
-              </div>
+                  )}{" "}
+                </div>
               )}
               {field.type === "dropDownList" && (
                 <div className="w-[93%] min-h-[67px] h-auto mx-auto rounded-xl border border-[#0000004D] px-4 py-5">
@@ -221,6 +219,31 @@ const ViewForm = () => {
                     {field.label}
                     {field.isRequired}
                   </span>
+                  <div className="flex w-full mt-2 mb-3">
+                    <div className="flex w-full justify-start gap-4 ">
+                      {field.options.map((option, index) => (
+                        <div className="flex flex-col">
+                          <div
+                            key={index}
+                            className={`flex flex-col items-center cursor-pointer }`}
+                          >
+                            <span className="text-2xl font-medium">
+                              {option.selectedNumber2}
+                            </span>
+                            <span className="text-2xl mt-4">
+                              <Circle className="size-5" />
+                            </span>
+                          </div>
+                          <span className="font-normal text-base mt-2">
+                            {option.bookmark1}
+                          </span>
+                          <span className="font-normal text-base mt-2">
+                            {option.bookmark2}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
               {field.type === "rating" && (
@@ -234,7 +257,6 @@ const ViewForm = () => {
                         <></>
                       )}
                     </span>
-                    {console.log(field)}
                     <div className="flex space-x-4 mt-2">
                       {field.options.map((option, index) => (
                         <div

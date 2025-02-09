@@ -73,7 +73,7 @@ const CreateQuestionnaire = () => {
     setComponents(formData);
   }, [formData]);
 
-  console.log("component", components);
+  console.log(formData)
 
   const handleSave = async () => {
     // Prepare the form data dynamically based on form components
@@ -90,6 +90,7 @@ const CreateQuestionnaire = () => {
           case "options":
           case "multipleChoice":
           case "dropDownList":
+          case "linearScale":
             fieldData.options = options || []; // Handle multiple choice or group options
             break;
           case "rating":
