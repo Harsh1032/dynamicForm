@@ -69,6 +69,7 @@ const ViewForm = () => {
                       )}
                     </span>
                     <div className="flex px-4 py-3 justify-between w-[50%] border border-[#0000004D] rounded-xl cursor-pointer">
+                      <span className="text-[#0000004D]">Select a date</span>
                       <CalendarIcon className="text-black size-5 ml-auto" />
                     </div>
                   </div>
@@ -219,35 +220,35 @@ const ViewForm = () => {
                     {field.label}
                     {field.isRequired}
                   </span>
-                  <div className="flex w-full mt-2 mb-3">
-                    <div className="flex w-full justify-start gap-4 ">
-                      {field.options.map((option, index) => (
-                        <div className="flex flex-col">
-                          <div
-                            key={index}
-                            className={`flex flex-col items-center cursor-pointer }`}
-                          >
-                            <span className="text-2xl font-medium">
-                              {option.selectedNumber2}
-                            </span>
-                            <span className="text-2xl mt-4">
-                              <Circle className="size-5" />
-                            </span>
-                          </div>
-                          <span className="font-normal text-base mt-2">
-                            {option.bookmark1}
-                          </span>
-                          <span className="font-normal text-base mt-2">
-                            {option.bookmark2}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="flex space-x-7 px-2">
+                    {Array.from(
+                      { length: Number(field.options[0].selectedNumber2) + 1 }, // Convert to number
+                      (_, index) => index
+                    ).map((num) => (
+                      <div
+                        key={num}
+                        className="flex flex-col items-center cursor-pointer"
+                      >
+                        <span className="text-2xl font-medium">{num}</span>
+                        <span className="text-2xl mt-4">
+                          <Circle className="size-5" />
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Bookmarks below the circles */}
+                  <div className="flex flex-col space-y-4 mt-4">
+                    <span className="font-normal text-base">
+                      {field.options[0].bookmark1}
+                    </span>
+                    <span className="font-normal text-base">
+                      {field.options[0].bookmark2}
+                    </span>
                   </div>
                 </div>
               )}
               {field.type === "rating" && (
-                <div className="w-[93%] min-h-[88px] h-auto flex items-center mx-auto rounded-xl border border-[#0000004D] px-4">
+                <div className="w-[93%] min-h-[88px] h-auto flex flex-col py-4 mx-auto rounded-xl border border-[#0000004D] px-4">
                   <div className="flex gap-x-4 items-center w-full ">
                     <span className="font-medium text-xl">
                       {field.label}:
@@ -257,19 +258,20 @@ const ViewForm = () => {
                         <></>
                       )}
                     </span>
-                    <div className="flex space-x-4 mt-2">
-                      {field.options.map((option, index) => (
-                        <div
-                          key={index}
-                          className={`flex flex-col items-center cursor-pointer }`}
-                        >
-                          <span className="text-2xl font-medium">
-                            {option.number}
-                          </span>
-                          <span className="text-2xl">{option.icon}</span>
-                        </div>
-                      ))}
-                    </div>
+                  </div>
+                  <div className="flex space-x-4 mt-2">
+                    {Array.from(
+                      { length: field.options[0].number },
+                      (_, index) => index + 1
+                    ).map((num) => (
+                      <div
+                        key={num}
+                        className="flex flex-col items-center cursor-pointer"
+                      >
+                        <span className="text-2xl font-medium">{num}</span>
+                        <span className="text-2xl">⭐</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}

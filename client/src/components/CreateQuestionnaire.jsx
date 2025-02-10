@@ -1,4 +1,4 @@
-import { Calendar } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import Title from "./formElements/Title";
 import Paragraph from "./formElements/Paragraph";
@@ -14,6 +14,8 @@ import LinearScale from "./formElements/LinearScale";
 import { useFormContext } from "./FormContext";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 // Component Mapping
 const componentMap = {
@@ -55,8 +57,12 @@ const DraggableComponent = ({ component, index, moveComponent, isPreview }) => {
 
   const Component = componentMap[component.type];
   return (
-    <div ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }} className=" space-y-4 w-full flex flex-col items-center cursor-pointer">
-      <Component id={component.id} isPreview={isPreview}/>
+    <div
+      ref={ref}
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+      className=" space-y-4 w-full flex flex-col items-center cursor-pointer"
+    >
+      <Component id={component.id} isPreview={isPreview} />
     </div>
   );
 };
@@ -64,8 +70,11 @@ const DraggableComponent = ({ component, index, moveComponent, isPreview }) => {
 const CreateQuestionnaire = () => {
   const [selectedButton, setSelectedButton] = useState("myPreConsultation");
   const [selectedComponent, setSelectedComponent] = useState("title");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [value, onChange] = useState(new Date());
   const [components, setComponents] = useState([]);
   const [isPreview, setIsPreview] = useState(false);
+  const [description, setDescription] = useState("");
   const { formData, addComponent, resetFormData } = useFormContext();
 
   useEffect(() => {
@@ -73,7 +82,7 @@ const CreateQuestionnaire = () => {
     setComponents(formData);
   }, [formData]);
 
-  console.log(formData)
+  console.log(value);
 
   const handleSave = async () => {
     // Prepare the form data dynamically based on form components
@@ -117,8 +126,8 @@ const CreateQuestionnaire = () => {
     );
 
     const formDataToSend = {
-      title: "data", // Form title
-      description: "hello", // Form description
+      creationDate: new Date(value), // Form title
+      description: description,
       fields: formattedFields, // Dynamically formatted fields
     };
 
@@ -133,6 +142,8 @@ const CreateQuestionnaire = () => {
       setComponents([]);
       setIsPreview(false); // Optionally reset preview state
       resetFormData();
+      onChange(new Date())
+      setDescription("")
       console.log("Form Saved:", data); // Log saved form data
     } catch (error) {
       console.error("Error saving form:", error); // Handle any errors
@@ -153,17 +164,36 @@ const CreateQuestionnaire = () => {
           <div className="flex items-center w-[77%] gap-1">
             <span className="font-semibold text-base">Creation Date:</span>
             <span className="text-red-600 size-4"> *</span>
-            <div className="flex px-4 py-3 justify-between w-[30%] border border-[#0000004D] rounded-xl">
-              <span className="text-[#0000004D]">Select Date</span>
-              <Calendar className="text-[#0000004D]" />
+            <div
+              className="flex px-4 py-3 justify-between w-[30%] border border-[#0000004D] rounded-xl"
+              onClick={() => setShowCalendar(!showCalendar)}
+            >
+              <span className="text-[#0000004D]">
+                {value ? value.toDateString() : "Select Date"}
+              </span>
+              <CalendarIcon className="text-black size-5" />
             </div>
           </div>
+          {showCalendar && (
+            <div className="absolute mt-[3.2%]">
+              <Calendar
+                onChange={(date) => {
+                  onChange(date);
+                  setShowCalendar(false); // Close calendar after selecting
+                }}
+                value={value}
+                className="relative"
+              />
+            </div>
+          )}
           <div className="flex items-center w-[77%] gap-1">
             <span className="font-semibold text-base">Description</span>
             <span className="text-red-600 size-4"> *</span>
             <input
-              className="flex-1 text-[#0000004D] px-4 py-3 justify-between border border-[#0000004D] rounded-xl"
+              className="flex-1 text-black placeholder:text-[#0000004D] px-4 py-3 justify-between border border-[#0000004D] rounded-xl"
               placeholder="Write here..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div className="flex items-center w-[77%] gap-1">
@@ -217,15 +247,15 @@ const CreateQuestionnaire = () => {
               </div>
             ) : (
               <div className="w-[70%] min-h-[628px] h-auto rounded-xl border border-[#00000004D] flex flex-col items-center py-5 gap-y-[14px]">
-               {components.map((component, index) => (
-                <DraggableComponent
-                  key={component.id}
-                  component={component}
-                  index={index}
-                  moveComponent={moveComponent}
-                  isPreview={isPreview}
-                />
-              ))}
+                {components.map((component, index) => (
+                  <DraggableComponent
+                    key={component.id}
+                    component={component}
+                    index={index}
+                    moveComponent={moveComponent}
+                    isPreview={isPreview}
+                  />
+                ))}
               </div>
             )}
             <div className="w-[28%] h-[628px] rounded-xl flex flex-col gap-y-[10px]">

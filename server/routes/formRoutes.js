@@ -6,14 +6,21 @@ const router = express.Router();
 // Create a new form (Save Form Structure)
 router.post("/", async (req, res) => {
   try {
-    const { title, description, fields } = req.body;
+    const { creationDate, description, fields } = req.body;
 
     // Ensure required fields are present
-    if (!title || !fields || !Array.isArray(fields)) {
-      return res.status(400).json({ error: "Title and fields are required" });
+    if (!creationDate || !fields || !Array.isArray(fields)) {
+      return res.status(400).json({ error: "Creation date and fields are required" });
     }
 
-    const form = new Form({ title, description, fields });
+    // Convert the user-provided creationDate to a Date object
+    const parsedDate = new Date(creationDate);
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({ message: "Invalid date format" });
+    }
+
+
+    const form = new Form({  creationDate: parsedDate, description, fields });
     await form.save();
 
     res.status(201).json({ message: "Form saved successfully", form });

@@ -15,10 +15,9 @@ const FieldSchema = new mongoose.Schema({
 });
 
 const FormSchema = new mongoose.Schema({
-  title: { type: String, required: true }, // Form title
+  creationDate: { type: Date, required: true }, // User-entered date
   description: { type: String, default: "" }, // Optional description
   fields: [FieldSchema], // Store array of fields
-  createdAt: { type: Date, default: Date.now }, // Timestamp
 });
 
 const Form = mongoose.model("Form", FormSchema);
