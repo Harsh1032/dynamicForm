@@ -40,17 +40,22 @@ const FormDashboard = () => {
     getAllForms(); // Fetch all forms when the component mounts
   }, []); // Empty
 
+  console.log("Form",forms)
+
   const [showCreateForm, setShowCreateForm] = useState(true);
   const [selectedButton, setSelectedButton] = useState("myPreConsultation");
   const itemsPerPage = 13;
   const [currentPage, setCurrentPage] = useState(1);
 
   // Extract the labels from all forms and their fields
-  const formLabels =  forms.flatMap((form) =>
-    form.fields
-      .filter((field) => field.type === "title") // Get only title fields
-      .map((field) => ({ id: form._id, label: field.label })) // Store both ID and title
+  const formLabels = forms.flatMap((form) =>
+    form.Fields
+      ? form.Fields
+          .filter((field) => field.type === "title") // Get only title fields
+          .map((field) => ({ id: form.id, label: field.label })) // Use `id` instead of `_id`
+      : []
   );
+  
   const totalPages = Math.ceil(formLabels.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

@@ -38,11 +38,11 @@ const ViewForm = () => {
         </div>
 
         <div className="mt-4 flex w-[50%] flex-col mx-auto min-h-[300px] py-5 h-auto border border-[#00000004D] mb-5 rounded-xl">
-          {form.fields.map((field) => (
-            <div key={field._id} className="p-3">
+          {form.Fields.map((field) => (
+            <div key={field.id} className="p-3">
               {field.type === "title" && (
                 <div className="w-[93%] min-h-[67px] h-auto mx-auto rounded-xl border border-[#0000004D] px-4 py-5">
-                  {field.label}
+                  <h2 className="font-medium text-xl">{field.label}</h2>
                 </div>
               )}
               {field.type === "paragraph" && (
@@ -108,12 +108,12 @@ const ViewForm = () => {
                       <></>
                     )}
                   </span>
-                  <textarea className="w-full h-[62px] p-2 rounded-lg border border-[#0000004D] placeholder:text-[#0000004D] resize-none" />
+                  <textarea placeholder="Text here..." className="w-full h-[62px] p-2 rounded-lg border border-[#0000004D] placeholder:text-[#0000004D] resize-none" />
                 </div>
               )}
               {field.type === "longAnswer" && (
                 <div className="w-[93%] min-h-[118px] h-auto rounded-xl mx-auto border border-[#0000004D] px-4 py-5 space-y-4">
-                  <div className="flex gap-x-4 items-center w-full ">
+                  <div className="flex flex-col gap-y-4 w-full ">
                     <span className="font-medium text-xl">
                       {field.label}
                       {field.isRequired ? (
@@ -122,7 +122,7 @@ const ViewForm = () => {
                         <></>
                       )}
                     </span>
-                    <textarea className="w-full h-[62px] p-2 rounded-lg border border-[#0000004D] placeholder:text-[#0000004D] resize-none" />
+                    <textarea placeholder="Text here..." className="w-full h-[62px] p-2 rounded-lg border border-[#0000004D] placeholder:text-[#0000004D] resize-none" />
                   </div>
                 </div>
               )}
@@ -248,7 +248,7 @@ const ViewForm = () => {
                 </div>
               )}
               {field.type === "rating" && (
-                <div className="w-[93%] min-h-[88px] h-auto flex flex-col py-4 mx-auto rounded-xl border border-[#0000004D] px-4">
+                <div className="w-[93%] min-h-[88px] h-auto flex flex-col py-4 mx-auto rounded-xl space-y-4">
                   <div className="flex gap-x-4 items-center w-full ">
                     <span className="font-medium text-xl">
                       {field.label}:

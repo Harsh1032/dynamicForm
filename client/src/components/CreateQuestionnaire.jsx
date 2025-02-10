@@ -82,7 +82,7 @@ const CreateQuestionnaire = () => {
     setComponents(formData);
   }, [formData]);
 
-  console.log(value);
+  console.log(components)
 
   const handleSave = async () => {
     // Prepare the form data dynamically based on form components
